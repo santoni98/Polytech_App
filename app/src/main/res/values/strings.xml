@@ -1,4 +1,7 @@
 <resources>
-    <string name="app_name">Test</string>
-    <string name="clickme">ClickMe</string>
+    <string name="app_name">PTech</string>
+    <string name="title_home">Расписание</string>
+    <string name="title_dashboard">Личный кабинет</string>
+    <string name="title_notifications">Навигация</string>
+    <string name="title_settings">settings</string>
 </resources>

@@ -1,54 +1,48 @@
-//test_4
 package com.example.test;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
-import java.io.IOException;
-import java.net.URL;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
-
-
-    private Button button;
-    private TextView textView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        
-        Document page = null;
-        try {
-            page = getPage();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        // css query language
-        Element tableWth = page.select("table[class=wt]").first();
-        Elements names = tableWth.select("tr[class=wth]");
-        Elements values = tableWth.select("tr[valign=top]");
-        String date = "";
-        System.out.println(date + "    Явления     Температура     Давление    Влажность   Ветер");
+
+        BottomNavigationView bottomNav = findViewById(R.id.nav_view);
+        bottomNav.setOnNavigationItemSelectedListener(navListener);
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.flFragment, new SecondFragment()).commit();
     }
 
-    private static Document getPage() throws IOException {
-        String url = "http://www.pogoda.spb.ru/";
-        Document page = Jsoup.parse(new URL(url), 3000);
-        return page;
-    }
+    private BottomNavigationView.OnNavigationItemSelectedListener navListener =
+            new BottomNavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                    Fragment selectedFragment = null;
+
+                    switch (item.getItemId()){
+                        case R.id.navigation_notifications:
+                            selectedFragment = new FirstFragment();
+                            break;
+                        case R.id.navigation_home:
+                            selectedFragment = new SecondFragment();
+                            break;
+                        case R.id.navigation_dashboard:
+                            selectedFragment = new ThridFragment();
+                            break;
+                    }
+
+                    getSupportFragmentManager().beginTransaction().replace(R.id.flFragment, selectedFragment).commit();
+
+                    return true;
+                }
+            };
 }
-
-
